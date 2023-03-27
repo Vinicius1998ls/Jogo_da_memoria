@@ -32,10 +32,14 @@ h1 {
     width: 200px;
     height: 250px;
     margin: 22px;
-    /* border: 3px black solid; */
-    /* border-radius: 10px; */
     background-color: #eef3fb;
     box-shadow: 1px 1px 10px 5px rgba(64, 64, 64, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Alkatra', cursive;
+    font-size: 1.6rem;
+    text-align: center;
 }
 
 #restart {
@@ -46,19 +50,27 @@ h1 {
     border: 2px black solid;
     border-radius: 5px;
     font-size: 1rem;
-    padding: 9px 7px;
+    padding: 8px 7px;
     background-color: #C26B6F;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
 }
 
 @media (max-width: 1000px) {
     section {
-        width: 800px;
+        width: 799px;
     }
 
     .card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        word-wrap: break-word;
         width: 150px;
         height: 200px;
         margin: 10px 5px;
+        font-size: 1.2rem;
+        
     }
 }
 
@@ -73,16 +85,23 @@ h1 {
         height: 200px;
         margin: 10px 5px;
     }
+
+    #restart {
+        margin: 25px auto 0 auto;
+    }
 }
 
-@media (max-width: 579px) {
-    section {
-        width: 100%;
+@media (max-width: 499px) {
+    .card {
+        width: 125px;
+        height: 175px;
+        margin: 10px 5px;
     }
+}
 
+@media (max-width: 404px) {
     .card {
         width: 100px;
         height: 150px;
-        margin: 10px 5px;
     }
 }
