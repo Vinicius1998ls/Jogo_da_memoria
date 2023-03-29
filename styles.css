@@ -72,6 +72,20 @@ img {
     font-weight: 500;
 }
 
+#start {
+    display: flex;
+    margin: 40px auto 0 auto;
+    width: 100px;
+    height: 40px;
+    border: 2px black solid;
+    border-radius: 5px;
+    font-size: 1rem;
+    padding: 8px 15px;
+    background-color: #E14142;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+}
+
 @media (max-width: 1000px) {
     section {
         width: 799px;
