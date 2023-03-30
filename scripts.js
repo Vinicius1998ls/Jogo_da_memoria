@@ -49,7 +49,7 @@ function start(time) {
                                 onclick="turn('card-8', position[7], number=7)">Jogo da memória</div>
                             </div>
 
-                            </div>`
+                        </div>`
 
     //Remove o botão começar e adiciona o botão recomeçar
     if(time == 'first') {
@@ -60,11 +60,13 @@ function start(time) {
 
     // Limpa o array
     position = new Array(8).fill(undefined)
+    //zera a pontuação
+    points = 0
     // chama a função para preencher o array position
     setCard('HTML')
     setCard('CSS')
     setCard('JS')
-    setCard('GPT')
+    setCard('GPT')    
 
 }
 
@@ -81,6 +83,8 @@ function addButton() {
 
 //cria o array
 let position = new Array(8).fill(undefined)
+//cria a pontuação
+let points = 0
 
 //sorteia um numero de 0 a 7
 function randomNumber(min, max) {
@@ -101,6 +105,7 @@ function setCard(card) {
     //posição recebe o valor passado como parametro
     position[number] = card
 
+    //o trecho de codigo igual sera executado para definir a segunda carta do par
     number = randomNumber()
     while(position[number] !== undefined) {
         number = randomNumber()
@@ -108,43 +113,57 @@ function setCard(card) {
     position[number] = card
 }
 
+// lista para guardar informações das cartas viradas
 const childrenList = []
 const idList = []
 const cardList = []
 
 // função para virar carta
 function turn(id, cardValue, children) {
+    //guarda as informações
     idList.push(id)
     cardList.push(cardValue)
     childrenList.push(children)    
     
+    //aqui mostra o outro lado da carta
     if(cardList[1] == undefined) {
+        //chama a função passando como parametro o valor da carta na primeira
+        // posição do array cardList, por exemplo, 'HTML' e o numero da posição 
+        //que essa carta foi clicada
         sideCard(cardList[0], childrenList[0])
     } else {
         sideCard(cardList[1], childrenList[1])
     }
     
+
     if(cardList[1] != undefined) {
-        console.log(cardList)
         if(cardList[0] == cardList[1]) {
-            console.log('São iguais')
+            // se as cartas forem iguais as listas seram limpas
             idList.splice(0, idList.length)
             cardList.splice(0, cardList.length)
             childrenList.splice(0, childrenList.length)
-         } else {
-            console.log('São Diferentes')            
-            setTimeout(() => turnAgain(idList[0], childrenList[0]), 900)
-            console.log('teste')
-            setTimeout(() => turnAgain(idList[1], childrenList[1]), 900)
-            console.log('teste2')
 
+            //quando as cartas forem iguais é marcado ponto
+            points = points + 1
+            //quando a pontuação chegar a 4 chama a função
+            if(points === 4) {
+                winner()
+            }
+            
+         } else {
+            //se forem diferentes será chamada uma função para desvirar as cartas
+            //essa função sera executada depois de um tempo            
+            setTimeout(() => turnAgain(idList[0], childrenList[0]), 900)            
+            setTimeout(() => turnAgain(idList[1], childrenList[1]), 900)
+            
+            
+            //esse trecho é executado depois que as cartas são desviradas por conta
+            //do tempo mais
+            //aqui ele limpa as listas
             setTimeout(() => {
                 idList.splice(0, idList.length)
                 cardList.splice(0, cardList.length)
                 childrenList.splice(0, childrenList.length)
-                console.log(idList)
-                console.log(cardList)
-                console.log(childrenList)
             }, 925)
         }
         
@@ -154,33 +173,47 @@ function turn(id, cardValue, children) {
 function sideCard(cardValue, position) {
     const cardSpace = document.querySelector('.organizer-cards')
     
-    //inseri a nova divida conforme o parametro recebido
+    //inseri a nova div conforme o parametro recebido
     if(cardValue == 'HTML') {
         cardSpace.children[position].innerHTML = `<div class="card-img">
-                            <img src="imgs/html.png" alt="html icon">
-                        </div>`
+                                                    <img src="imgs/html.png" alt="html icon">
+                                                  </div>`
     } else if(cardValue == 'CSS') {
         cardSpace.children[position].innerHTML = `<div class="card-img">
-                            <img src="imgs/css.png" alt="css icon">
-                        </div>`
+                                                    <img src="imgs/css.png" alt="css icon">
+                                                  </div>`
     } else if(cardValue == 'JS') {
         cardSpace.children[position].innerHTML = `<div class="card-img">
-                            <img src="imgs/javascript.png" alt="js icon">
-                        </div>`
+                                                    <img src="imgs/javascript.png" alt="js icon">
+                                                  </div>`
     } else {
         cardSpace.children[position].innerHTML = `<div class="card-img">
-                            <img src="imgs/gpt.png" alt="ChatGPT icon">
-                         </div>`
+                                                    <img src="imgs/gpt.png" alt="ChatGPT icon">
+                                                  </div>`
     }
 }
 
 function turnAgain(id, number) {
-    
+    //seleciona o card para ser desvirado
     const card = document.getElementById(id)
-    
+    //remove o primeiro filho
     card.children[0].remove()
+    //inseri o trocho com os valores iniciais
     card.innerHTML = `<div class="card" 
                         onclick="turn('${id}', position[${number}], number=${number})">
                         Jogo da memória
-                    </div>`
+                      </div>`
+}
+
+function winner() {
+    //seleciona o espaço das cartas
+    const cardSpace = document.querySelector('.organizer-cards')
+
+    //remove as cartas
+    while(cardSpace.firstChild) {
+        cardSpace.removeChild(cardSpace.firstChild)
+    }
+
+    //Inseri a mensagem de vitoria
+    cardSpace.innerHTML = `<h2>Parabéns, você venceu!!!</h2>`
 }
