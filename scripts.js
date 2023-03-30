@@ -9,36 +9,44 @@ function start(time) {
     }
 
     //inseri as cartas
-    cardSpace.innerHTML = `<div id="card-1" onclick="turn('card-1', position[0])">
-                                <div class="card">Jogo da memória</div>
+    cardSpace.innerHTML = `<div id="card-1">
+                                <div class="card" 
+                                onclick="turn('card-1', position[0], number=0)">Jogo da memória</div>
                             </div>
 
-                            <div id="card-2" onclick="turn('card-2', position[1])">
-                                <div class="card">Jogo da memória</div>
+                            <div id="card-2">
+                                <div class="card" 
+                                onclick="turn('card-2', position[1], number=1)">Jogo da memória</div>
                             </div>
 
-                            <div id="card-3" onclick="turn('card-3', position[2])">
-                                <div class="card">Jogo da memória</div>
+                            <div id="card-3">
+                                <div class="card" 
+                                onclick="turn('card-3', position[2], number=2)">Jogo da memória</div>
                             </div>
 
-                            <div id="card-4" onclick="turn('card-4', position[3])">
-                                <div class="card">Jogo da memória</div>
+                            <div id="card-4">
+                                <div class="card" 
+                                onclick="turn('card-4', position[3], number=3)">Jogo da memória</div>
                             </div>
 
-                            <div id="card-5" onclick="turn('card-5', position[4])">
-                                <div class="card">Jogo da memória</div>
+                            <div id="card-5">
+                                <div class="card" 
+                                onclick="turn('card-5', position[4], number=4)">Jogo da memória</div>
                             </div>
 
-                            <div id="card-6" onclick="turn('card-6', position[5])">
-                                <div class="card">Jogo da memória</div>
+                            <div id="card-6">
+                                <div class="card" 
+                                onclick="turn('card-6', position[5], number=5)">Jogo da memória</div>
                             </div>
 
-                            <div id="card-7" onclick="turn('card-7', position[6])">
-                                <div class="card">Jogo da memória</div>
+                            <div id="card-7">
+                                <div class="card" 
+                                onclick="turn('card-7', position[6], number=6)">Jogo da memória</div>
                             </div>
 
-                            <div id="card-8" onclick="turn('card-8', position[7])">
-                                <div class="card">Jogo da memória</div>
+                            <div id="card-8">
+                                <div class="card" 
+                                onclick="turn('card-8', position[7], number=7)">Jogo da memória</div>
                             </div>
 
                             </div>`
@@ -100,30 +108,79 @@ function setCard(card) {
     position[number] = card
 }
 
-// função para virar carta
-function turn(id, cardValue) { 
-    // seleciona o ID recebido como parametro   
-    const card = document.getElementById(id)
-    // Remove a div
-    card.children[0].remove()
+const childrenList = []
+const idList = []
+const cardList = []
 
+// função para virar carta
+function turn(id, cardValue, children) {
+    idList.push(id)
+    cardList.push(cardValue)
+    childrenList.push(children)    
+    
+    if(cardList[1] == undefined) {
+        sideCard(cardList[0], childrenList[0])
+    } else {
+        sideCard(cardList[1], childrenList[1])
+    }
+    
+    if(cardList[1] != undefined) {
+        console.log(cardList)
+        if(cardList[0] == cardList[1]) {
+            console.log('São iguais')
+            idList.splice(0, idList.length)
+            cardList.splice(0, cardList.length)
+            childrenList.splice(0, childrenList.length)
+         } else {
+            console.log('São Diferentes')            
+            setTimeout(() => turnAgain(idList[0], childrenList[0]), 900)
+            console.log('teste')
+            setTimeout(() => turnAgain(idList[1], childrenList[1]), 900)
+            console.log('teste2')
+
+            setTimeout(() => {
+                idList.splice(0, idList.length)
+                cardList.splice(0, cardList.length)
+                childrenList.splice(0, childrenList.length)
+                console.log(idList)
+                console.log(cardList)
+                console.log(childrenList)
+            }, 925)
+        }
+        
+    }    
+}
+
+function sideCard(cardValue, position) {
+    const cardSpace = document.querySelector('.organizer-cards')
+    
     //inseri a nova divida conforme o parametro recebido
     if(cardValue == 'HTML') {
-        card.innerHTML = `<div class="card-img">
+        cardSpace.children[position].innerHTML = `<div class="card-img">
                             <img src="imgs/html.png" alt="html icon">
                         </div>`
     } else if(cardValue == 'CSS') {
-        card.innerHTML = `<div class="card-img">
+        cardSpace.children[position].innerHTML = `<div class="card-img">
                             <img src="imgs/css.png" alt="css icon">
                         </div>`
     } else if(cardValue == 'JS') {
-        card.innerHTML = `<div class="card-img">
+        cardSpace.children[position].innerHTML = `<div class="card-img">
                             <img src="imgs/javascript.png" alt="js icon">
                         </div>`
     } else {
-        card.innerHTML = `<div class="card-img">
+        cardSpace.children[position].innerHTML = `<div class="card-img">
                             <img src="imgs/gpt.png" alt="ChatGPT icon">
                          </div>`
     }
+}
+
+function turnAgain(id, number) {
     
+    const card = document.getElementById(id)
+    
+    card.children[0].remove()
+    card.innerHTML = `<div class="card" 
+                        onclick="turn('${id}', position[${number}], number=${number})">
+                        Jogo da memória
+                    </div>`
 }
